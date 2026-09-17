@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans KR', sans-serif;
+  }
+}
+
+.font-display {
+  font-family: 'Black Han Sans', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Hip Neo-Pop Sticker Shadows */
+.pop-shadow {
+  box-shadow: 4px 4px 0px #0F172A;
+}
+
+.pop-shadow-sm {
+  box-shadow: 2px 2px 0px #0F172A;
+}
+
+.pop-shadow-lg {
+  box-shadow: 6px 6px 0px #0F172A;
+}
+
+.pop-shadow-hover {
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.pop-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #0F172A;
+}
+
+.pop-shadow-hover:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0px #0F172A;
+}
+
+/* Custom fun scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+.pop-shadow-xs {
+  box-shadow: 1px 1px 0px #0F172A;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0px) scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-50px) scale(1.1) rotate(15deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) scale(1.3) rotate(-15deg);
+  }
+}
+
+.animate-floatUp {
+  animation: floatUp 1.6s ease-out forwards;
+}
