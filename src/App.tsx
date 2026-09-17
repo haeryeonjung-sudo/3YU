@@ -30,20 +30,39 @@ import { MemberManagerModal } from './components/MemberManagerModal';
 import { ShareModal } from './components/ShareModal';
 import { Sparkles, Heart } from 'lucide-react';
 
-const STORAGE_KEY_MEMBERS = 'family_vibe_members_v1';
-const STORAGE_KEY_SCHEDULES = 'family_vibe_schedules_v1';
-const STORAGE_KEY_MEMOS = 'family_vibe_memos_v1';
-const STORAGE_KEY_DDAYS = 'family_vibe_ddays_v1';
-const STORAGE_KEY_DINNER_MENU = 'family_vibe_dinner_menu_v1';
-const STORAGE_KEY_GOALS = 'family_vibe_goals_v1';
-const STORAGE_KEY_MEDIA = 'family_vibe_media_v1';
+const STORAGE_KEY_MEMBERS = 'family_vibe_members_v2';
+const STORAGE_KEY_SCHEDULES = 'family_vibe_schedules_v2';
+const STORAGE_KEY_MEMOS = 'family_vibe_memos_v2';
+const STORAGE_KEY_DDAYS = 'family_vibe_ddays_v2';
+const STORAGE_KEY_DINNER_MENU = 'family_vibe_dinner_menu_v2';
+const STORAGE_KEY_GOALS = 'family_vibe_goals_v2';
+const STORAGE_KEY_MEDIA = 'family_vibe_media_v2';
 
 export default function App() {
-  // Members state
+  // Members state (auto-migrates from old names to 태유, 온유, 관유)
   const [members, setMembers] = useState<FamilyMember[]>(() => {
     try {
+      // Clear legacy v1 keys to ensure clean migration on deployed instances
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('family_vibe_members_v1');
+        localStorage.removeItem('family_vibe_schedules_v1');
+        localStorage.removeItem('family_vibe_memos_v1');
+        localStorage.removeItem('family_vibe_ddays_v1');
+        localStorage.removeItem('family_vibe_goals_v1');
+        localStorage.removeItem('family_vibe_media_v1');
+      }
+
       const saved = localStorage.getItem(STORAGE_KEY_MEMBERS);
-      return saved ? JSON.parse(saved) : INITIAL_MEMBERS;
+      if (saved) {
+        const parsed: FamilyMember[] = JSON.parse(saved);
+        const hasLegacyNames = parsed.some((m) => m.name === '민서' || m.name === '준우');
+        const hasGwanyu = parsed.some((m) => m.name === '관유');
+        if (!hasLegacyNames && hasGwanyu && parsed.length >= 3) {
+          return parsed;
+        }
+      }
+      localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(INITIAL_MEMBERS));
+      return INITIAL_MEMBERS;
     } catch {
       return INITIAL_MEMBERS;
     }
@@ -57,7 +76,15 @@ export default function App() {
   const [schedules, setSchedules] = useState<ScheduleItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_SCHEDULES);
-      return saved ? JSON.parse(saved) : getInitialSchedules();
+      if (saved) {
+        const parsed: ScheduleItem[] = JSON.parse(saved);
+        if (!parsed.some((s) => s.title.includes('민서') || s.title.includes('준우'))) {
+          return parsed;
+        }
+      }
+      const initial = getInitialSchedules();
+      localStorage.setItem(STORAGE_KEY_SCHEDULES, JSON.stringify(initial));
+      return initial;
     } catch {
       return getInitialSchedules();
     }
@@ -67,7 +94,7 @@ export default function App() {
   const [memos, setMemos] = useState<FamilyMemo[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_MEMOS);
-      return saved ? JSON.parse(saved) : INITIAL_MEMBERS;
+      return saved ? JSON.parse(saved) : INITIAL_MEMOS;
     } catch {
       return INITIAL_MEMOS;
     }
@@ -77,7 +104,15 @@ export default function App() {
   const [ddays, setDdays] = useState<DDayEvent[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_DDAYS);
-      return saved ? JSON.parse(saved) : INITIAL_DDAYS;
+      if (saved) {
+        const parsed: DDayEvent[] = JSON.parse(saved);
+        if (!parsed.some((d) => d.title.includes('민서') || d.title.includes('준우'))) {
+          return parsed;
+        }
+      }
+      const initial = INITIAL_DDAYS;
+      localStorage.setItem(STORAGE_KEY_DDAYS, JSON.stringify(initial));
+      return initial;
     } catch {
       return INITIAL_DDAYS;
     }
@@ -101,7 +136,15 @@ export default function App() {
   const [goals, setGoals] = useState<MemberGoal[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_GOALS);
-      return saved ? JSON.parse(saved) : INITIAL_GOALS;
+      if (saved) {
+        const parsed: MemberGoal[] = JSON.parse(saved);
+        if (!parsed.some((g) => g.rewardNote?.includes('민서') || g.comments?.some((c) => c.text.includes('준우')))) {
+          return parsed;
+        }
+      }
+      const initial = INITIAL_GOALS;
+      localStorage.setItem(STORAGE_KEY_GOALS, JSON.stringify(initial));
+      return initial;
     } catch {
       return INITIAL_GOALS;
     }
@@ -113,12 +156,16 @@ export default function App() {
       const saved = localStorage.getItem(STORAGE_KEY_MEDIA);
       if (saved) {
         const parsed: FamilyMediaItem[] = JSON.parse(saved);
-        if (!parsed.some((item) => item.id === 'media-yt-featured' || item.url.includes('kX3EnAayzDo'))) {
-          return [...INITIAL_MEDIA_ITEMS.filter((i) => i.id === 'media-yt-featured'), ...parsed];
+        if (!parsed.some((m) => m.comments?.some((c) => c.text.includes('민서')))) {
+          if (!parsed.some((item) => item.id === 'media-yt-featured' || item.url.includes('kX3EnAayzDo'))) {
+            return [...INITIAL_MEDIA_ITEMS.filter((i) => i.id === 'media-yt-featured'), ...parsed];
+          }
+          return parsed;
         }
-        return parsed;
       }
-      return INITIAL_MEDIA_ITEMS;
+      const initial = INITIAL_MEDIA_ITEMS;
+      localStorage.setItem(STORAGE_KEY_MEDIA, JSON.stringify(initial));
+      return initial;
     } catch {
       return INITIAL_MEDIA_ITEMS;
     }
@@ -323,6 +370,12 @@ export default function App() {
       const remaining = members.filter((m) => m.id !== memberId);
       if (remaining[0]) setActiveMemberId(remaining[0].id);
     }
+  };
+
+  const handleResetMembersToDefault = () => {
+    setMembers(INITIAL_MEMBERS);
+    setActiveMemberId(INITIAL_MEMBERS[0]?.id || 'teen-1');
+    localStorage.setItem(STORAGE_KEY_MEMBERS, JSON.stringify(INITIAL_MEMBERS));
   };
 
   // Goal operations
@@ -636,6 +689,7 @@ export default function App() {
         onAddMember={handleAddMember}
         onUpdateMember={handleUpdateMember}
         onDeleteMember={handleDeleteMember}
+        onResetToDefault={handleResetMembersToDefault}
       />
 
       <ShareModal

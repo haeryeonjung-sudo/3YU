@@ -9,6 +9,7 @@ interface MemberManagerModalProps {
   onAddMember: (newMember: FamilyMember) => void;
   onUpdateMember: (updated: FamilyMember) => void;
   onDeleteMember: (memberId: string) => void;
+  onResetToDefault?: () => void;
 }
 
 const AVATAR_OPTIONS = ['🎧', '🛹', '⚡', '🌸', '👓', '🐱', '🐶', '🎮', '🎨', '⚽', '🎸', '👑', '🚀', '☕'];
@@ -29,6 +30,7 @@ export const MemberManagerModal: React.FC<MemberManagerModalProps> = ({
   onAddMember,
   onUpdateMember,
   onDeleteMember,
+  onResetToDefault,
 }) => {
   if (!isOpen) return null;
 
@@ -130,19 +132,36 @@ export const MemberManagerModal: React.FC<MemberManagerModalProps> = ({
         <div className="p-4 sm:p-6 space-y-4">
           {/* Member list */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="text-xs font-black text-slate-700 uppercase">
                 현재 등록된 가족 ({members.length}명)
               </span>
               {!isAddingNew && !editingMemberId && (
-                <button
-                  id="btn-add-new-member"
-                  onClick={handleStartAdd}
-                  className="flex items-center gap-1 text-xs font-black text-white bg-slate-900 px-3 py-1.5 rounded-xl pop-shadow-sm hover:bg-slate-800"
-                >
-                  <Plus className="w-3.5 h-3.5 stroke-[3]" />
-                  <span>새 구성원 추가</span>
-                </button>
+                <div className="flex items-center gap-1.5">
+                  {onResetToDefault && (
+                    <button
+                      id="btn-reset-default-members"
+                      type="button"
+                      onClick={() => {
+                        if (window.confirm('기본 가족(태유, 온유, 관유, 엄마, 아빠)으로 재설정하시겠습니까?')) {
+                          onResetToDefault();
+                        }
+                      }}
+                      className="text-[11px] font-black text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-2.5 py-1.5 rounded-xl border border-slate-300 transition-all"
+                      title="태유, 온유, 관유, 엄마, 아빠로 복원"
+                    >
+                      기본 가족으로 복원
+                    </button>
+                  )}
+                  <button
+                    id="btn-add-new-member"
+                    onClick={handleStartAdd}
+                    className="flex items-center gap-1 text-xs font-black text-white bg-slate-900 px-3 py-1.5 rounded-xl pop-shadow-sm hover:bg-slate-800"
+                  >
+                    <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                    <span>새 구성원 추가</span>
+                  </button>
+                </div>
               )}
             </div>
 

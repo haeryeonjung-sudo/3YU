@@ -10,7 +10,7 @@ import {
 export const INITIAL_MEMBERS: FamilyMember[] = [
   {
     id: 'teen-1',
-    name: '민서',
+    name: '태유',
     role: 'teen',
     gradeBadge: '고2 🎧',
     avatar: '🎧',
@@ -24,7 +24,7 @@ export const INITIAL_MEMBERS: FamilyMember[] = [
   },
   {
     id: 'teen-2',
-    name: '준우',
+    name: '온유',
     role: 'teen',
     gradeBadge: '중3 ⚡',
     avatar: '🛹',
@@ -35,6 +35,20 @@ export const INITIAL_MEMBERS: FamilyMember[] = [
     currentStatus: '친구랑 축구',
     todayDinner: 'eating',
     dinnerNote: '집밥 대환영! 밥 두 공기 예약 🍚',
+  },
+  {
+    id: 'teen-3',
+    name: '관유',
+    role: 'teen',
+    gradeBadge: '초6 🌟',
+    avatar: '🎮',
+    color: '#F59E0B',
+    bgLight: '#FEF3C7',
+    borderColor: '#FBBF24',
+    mood: '오늘 기분 짱짱 🌈',
+    currentStatus: '피아노 & 영어학원',
+    todayDinner: 'eating',
+    dinnerNote: '엄마 된장찌개 제일 좋아요!',
   },
   {
     id: 'mom',
@@ -62,7 +76,7 @@ export const INITIAL_MEMBERS: FamilyMember[] = [
     mood: '오늘 칼퇴 성공 기원 🏃‍♂️',
     currentStatus: '퇴근 준비',
     todayDinner: 'eating',
-    dinnerNote: '8시 전 도착 예정! 민서 픽업 가능',
+    dinnerNote: '8시 전 도착 예정! 태유/관유 픽업 가능',
   },
 ];
 
@@ -162,7 +176,7 @@ export function getInitialSchedules(): ScheduleItem[] {
     {
       id: 'sch-4',
       memberId: 'dad',
-      title: '민서 학원 픽업 & 퇴근',
+      title: '태유 학원 픽업 & 퇴근',
       category: 'pickup',
       categoryIcon: '🚗',
       date: today,
@@ -170,12 +184,35 @@ export function getInitialSchedules(): ScheduleItem[] {
       endTime: '22:00',
       location: '학원가 사거리',
       note: '비 올 수 있으니 우산 챙겨감',
-      tags: ['#픽업', '#딸바보', '#안전귀가'],
+      tags: ['#픽업', '#안전귀가', '#가족사랑'],
       cheers: [],
       createdAt: Date.now() - 1000 * 60 * 60 * 2,
     },
     {
       id: 'sch-5',
+      memberId: 'teen-3',
+      title: '관유 피아노 & 영어학원',
+      category: 'academy',
+      categoryIcon: '🎹',
+      date: today,
+      startTime: '15:30',
+      endTime: '17:30',
+      location: '예술음악학원 3층',
+      note: '새 악보 연습 & 단어 테스트',
+      tags: ['#피아노', '#영어', '#열공'],
+      cheers: [
+        {
+          id: 'ch-5',
+          fromMemberId: 'mom',
+          emoji: '💖',
+          message: '관유야 오늘도 즐겁게 연주하고 와~',
+          timestamp: Date.now() - 1000 * 60 * 40,
+        },
+      ],
+      createdAt: Date.now() - 1000 * 60 * 60 * 2,
+    },
+    {
+      id: 'sch-6',
       memberId: 'teen-1',
       title: '독서실 모의고사 풀기',
       category: 'study',
@@ -190,7 +227,7 @@ export function getInitialSchedules(): ScheduleItem[] {
       createdAt: Date.now() - 1000 * 60 * 60 * 1,
     },
     {
-      id: 'sch-6',
+      id: 'sch-7',
       memberId: 'teen-2',
       title: '영어 회화 학원',
       category: 'academy',
@@ -213,7 +250,7 @@ export const INITIAL_MEMOS: FamilyMemo[] = [
     content: '냉장고에 샤인머스캣 씻어뒀으니까 꺼내먹어~! 🍇',
     tag: 'snack',
     date: getOffsetDateString(0),
-    likes: ['teen-1', 'teen-2', 'dad'],
+    likes: ['teen-1', 'teen-2', 'teen-3', 'dad'],
     createdAt: Date.now() - 1000 * 60 * 120,
   },
   {
@@ -231,7 +268,7 @@ export const INITIAL_MEMOS: FamilyMemo[] = [
     content: '주말에 다같이 영화관 갈 사람 손! 팝콘 쏜다 🍿',
     tag: 'notice',
     date: getOffsetDateString(0),
-    likes: ['teen-1', 'teen-2', 'mom'],
+    likes: ['teen-1', 'teen-2', 'teen-3', 'mom'],
     createdAt: Date.now() - 1000 * 60 * 200,
   },
 ];
@@ -239,7 +276,7 @@ export const INITIAL_MEMOS: FamilyMemo[] = [
 export const INITIAL_DDAYS: DDayEvent[] = [
   {
     id: 'dday-1',
-    title: '민서 2학기 중간고사 💯',
+    title: '태유 2학기 중간고사 💯',
     date: getOffsetDateString(5),
     emoji: '📝',
     memberId: 'teen-1',
@@ -254,11 +291,19 @@ export const INITIAL_DDAYS: DDayEvent[] = [
   },
   {
     id: 'dday-3',
-    title: '준우 축구 결승전 ⚽',
+    title: '온유 축구 결승전 ⚽',
     date: getOffsetDateString(8),
     emoji: '🏆',
     memberId: 'teen-2',
     color: '#8B5CF6',
+  },
+  {
+    id: 'dday-4',
+    title: '관유 피아노 발표회 🎹',
+    date: getOffsetDateString(15),
+    emoji: '🎶',
+    memberId: 'teen-3',
+    color: '#F59E0B',
   },
 ];
 
@@ -396,7 +441,7 @@ export const CHEER_STICKERS = [
 export const INITIAL_GOALS: MemberGoal[] = [
   {
     id: 'goal-1',
-    memberId: 'teen-1', // 민서 (고2)
+    memberId: 'teen-1', // 태유 (고2)
     title: '매일 수학 기출 10문제 & 오답노트 정리 📐',
     category: 'study',
     categoryIcon: '📐',
@@ -406,7 +451,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
     isCompletedToday: true,
     streakDays: 5,
     cheerCount: 6,
-    cheeredBy: ['mom', 'dad', 'teen-2'],
+    cheeredBy: ['mom', 'dad', 'teen-2', 'teen-3'],
     comments: [
       {
         id: 'gc-1',
@@ -421,7 +466,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
         timestamp: Date.now() - 1000 * 60 * 30,
       },
     ],
-    rewardNote: '7일 연속 달성 시 민서 최애 마라탕 & 탕후루 파티!',
+    rewardNote: '7일 연속 달성 시 태유 최애 마라탕 & 탕후루 파티!',
     createdAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
   },
   {
@@ -450,7 +495,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
   },
   {
     id: 'goal-3',
-    memberId: 'teen-2', // 준우 (중3)
+    memberId: 'teen-2', // 온유 (중3)
     title: '영어 단어 하루 30개 암기 (클래스카드) 📚',
     category: 'study',
     categoryIcon: '📚',
@@ -465,7 +510,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
       {
         id: 'gc-4',
         fromMemberId: 'teen-1',
-        text: '오 준우 단어 시험 만점 받으면 코노 3곡 지원함 🎤',
+        text: '오 온유 단어 시험 만점 받으면 코노 3곡 지원함 🎤',
         timestamp: Date.now() - 1000 * 60 * 60,
       },
     ],
@@ -491,6 +536,30 @@ export const INITIAL_GOALS: MemberGoal[] = [
   },
   {
     id: 'goal-5',
+    memberId: 'teen-3', // 관유 (초6)
+    title: '매일 피아노 30분 연습 & 독서 1챕터 🎹',
+    category: 'habit',
+    categoryIcon: '🎹',
+    frequency: 'daily',
+    targetCount: 7,
+    currentCount: 5,
+    isCompletedToday: true,
+    streakDays: 5,
+    cheerCount: 5,
+    cheeredBy: ['mom', 'dad', 'teen-1'],
+    comments: [
+      {
+        id: 'gc-5-1',
+        fromMemberId: 'mom',
+        text: '관유 피아노 소리 너무 맑고 좋다! 화이팅 🎶',
+        timestamp: Date.now() - 1000 * 60 * 40,
+      },
+    ],
+    rewardNote: '발표회 곡 완주 시 레고 선물 세트!',
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
+  },
+  {
+    id: 'goal-6',
     memberId: 'mom', // 엄마
     title: '하루 만보 걷기 & 저녁 요가 🧘‍♀️',
     category: 'exercise',
@@ -501,7 +570,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
     isCompletedToday: true,
     streakDays: 8,
     cheerCount: 5,
-    cheeredBy: ['dad', 'teen-1', 'teen-2'],
+    cheeredBy: ['dad', 'teen-1', 'teen-2', 'teen-3'],
     comments: [
       {
         id: 'gc-5',
@@ -514,7 +583,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
     createdAt: Date.now() - 1000 * 60 * 60 * 24 * 10,
   },
   {
-    id: 'goal-6',
+    id: 'goal-7',
     memberId: 'dad', // 아빠
     title: '주 3회 야식 참기 & 물 2L 마시기 💧',
     category: 'habit',
@@ -525,7 +594,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
     isCompletedToday: true,
     streakDays: 12,
     cheerCount: 7,
-    cheeredBy: ['mom', 'teen-1'],
+    cheeredBy: ['mom', 'teen-1', 'teen-3'],
     comments: [
       {
         id: 'gc-6',
@@ -542,7 +611,7 @@ export const INITIAL_GOALS: MemberGoal[] = [
 export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
   {
     id: 'media-yt-featured',
-    fromMemberId: 'teen-1', // 민서
+    fromMemberId: 'teen-1', // 태유
     type: 'video',
     url: 'https://www.youtube.com/embed/kX3EnAayzDo',
     caption: '🎧 우리 가족 공식 추천 영상 & BGM 온에어! 지친 하루 힐링하고 함께 파이팅해요 ✨',
@@ -550,10 +619,10 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
     tagLabel: '가족추억 📹',
     date: getOffsetDateString(0),
     location: '패밀리 바이브 온에어',
-    likes: ['mom', 'dad', 'teen-1', 'teen-2'],
+    likes: ['mom', 'dad', 'teen-1', 'teen-2', 'teen-3'],
     reactions: [
       { emoji: '🔥', byMemberIds: ['teen-1', 'teen-2'] },
-      { emoji: '💖', byMemberIds: ['mom', 'dad'] },
+      { emoji: '💖', byMemberIds: ['mom', 'dad', 'teen-3'] },
       { emoji: '👏', byMemberIds: ['dad'] },
     ],
     comments: [
@@ -574,7 +643,7 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
   },
   {
     id: 'media-1',
-    fromMemberId: 'teen-1', // 민서
+    fromMemberId: 'teen-1', // 태유
     type: 'photo',
     url: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80',
     caption: '오늘 스카 6시간 버닝 완료! 📐 모의고사 오답노트 3장째 작성중 🎧 커피 마시고 힘내자',
@@ -582,17 +651,17 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
     tagLabel: '열공인증 📖',
     date: getOffsetDateString(0),
     location: '르하임 스터디카페 32번석',
-    likes: ['mom', 'dad', 'teen-2'],
+    likes: ['mom', 'dad', 'teen-2', 'teen-3'],
     reactions: [
       { emoji: '🔥', byMemberIds: ['mom', 'dad'] },
       { emoji: '🧋', byMemberIds: ['dad'] },
-      { emoji: '💯', byMemberIds: ['teen-2'] },
+      { emoji: '💯', byMemberIds: ['teen-2', 'teen-3'] },
     ],
     comments: [
       {
         id: 'mc-1',
         fromMemberId: 'mom',
-        text: '글씨 깔끔한 것 봐! 집 올 때 조심해서 와 민서야 💕',
+        text: '글씨 깔끔한 것 봐! 집 올 때 조심해서 와 태유야 💕',
         timestamp: Date.now() - 1000 * 60 * 45,
       },
       {
@@ -606,7 +675,7 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
   },
   {
     id: 'media-2',
-    fromMemberId: 'teen-2', // 준우
+    fromMemberId: 'teen-2', // 온유
     type: 'photo',
     url: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800&auto=format&fit=crop&q=80',
     caption: '방과후 학교 운동장에서 풋살 한판! ⚽ 마지막 슛으로 동점골 넣음 ㅋㅋㅋ 짱잼',
@@ -614,10 +683,10 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
     tagLabel: '학교&일상 🛹',
     date: getOffsetDateString(0),
     location: '학교 대운동장',
-    likes: ['dad', 'teen-1'],
+    likes: ['dad', 'teen-1', 'teen-3'],
     reactions: [
       { emoji: '⚽', byMemberIds: ['dad'] },
-      { emoji: '👏', byMemberIds: ['mom', 'teen-1'] },
+      { emoji: '👏', byMemberIds: ['mom', 'teen-1', 'teen-3'] },
     ],
     comments: [
       {
@@ -639,9 +708,9 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
     tagLabel: '오늘의밥상 🍚',
     date: getOffsetDateString(0),
     location: '스위트홈 주방',
-    likes: ['teen-1', 'teen-2', 'dad'],
+    likes: ['teen-1', 'teen-2', 'teen-3', 'dad'],
     reactions: [
-      { emoji: '🤤', byMemberIds: ['teen-1', 'teen-2', 'dad'] },
+      { emoji: '🤤', byMemberIds: ['teen-1', 'teen-2', 'teen-3', 'dad'] },
       { emoji: '❤️', byMemberIds: ['dad'] },
     ],
     comments: [
@@ -657,6 +726,12 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
         text: '지금 집 가는 중입니다 폭풍흡입 예정 🏃‍♂️💨',
         timestamp: Date.now() - 1000 * 60 * 60,
       },
+      {
+        id: 'mc-5-2',
+        fromMemberId: 'teen-3',
+        text: '저도 된장찌개에 밥 비벼 먹을래요! 🍚',
+        timestamp: Date.now() - 1000 * 60 * 55,
+      },
     ],
     createdAt: Date.now() - 1000 * 60 * 80,
   },
@@ -670,9 +745,9 @@ export const INITIAL_MEDIA_ITEMS: FamilyMediaItem[] = [
     tagLabel: '가족추억 📹',
     date: getOffsetDateString(-1),
     location: '한강 탄천 다리 위',
-    likes: ['mom', 'teen-1'],
+    likes: ['mom', 'teen-1', 'teen-3'],
     reactions: [
-      { emoji: '✨', byMemberIds: ['mom', 'teen-1', 'teen-2'] },
+      { emoji: '✨', byMemberIds: ['mom', 'teen-1', 'teen-2', 'teen-3'] },
       { emoji: '💖', byMemberIds: ['mom'] },
     ],
     comments: [
